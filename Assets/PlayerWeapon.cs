@@ -4,31 +4,36 @@ using UnityEngine;
 
 public class PlayerWeapon : MonoBehaviour
 {
-    public GameObject bulletPrefab;
+    private const string BULLET_PREFAB_PATH = "_Prefabs/Bullet";
+    //public GameObject bulletPrefab;
     public Transform ShootPoint;
     public float force = 30;
     public float lifeTime = 3;
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Fire();
         }
     }
     private void Fire()
     {
-        var bullet = Instantiate(bulletPrefab, ShootPoint.position, Quaternion.identity);
+        var bullet = ObjectPooler.GetPooledObject(BULLET_PREFAB_PATH);
+        bullet.transform.position = ShootPoint.position;
+        bullet.transform.rotation = Quaternion.identity;
+        bullet.SetActive(true);
+        //var bullet = Instantiate(bulletPrefab, ShootPoint.position, Quaternion.identity);
         var rigidBody = bullet.GetComponent<Rigidbody>();
         rigidBody.AddForce(ShootPoint.forward * force, ForceMode.Impulse);
-        StartCoroutine(DestroyBulletAfterTime(bullet, lifeTime));
+        //StartCoroutine(DestroyBulletAfterTime(bullet, lifeTime));
 
     }
-    private IEnumerator DestroyBulletAfterTime(GameObject bullet, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        Destroy(bullet);
+    //private IEnumerator DestroyBulletAfterTime(GameObject bullet, float delay)
+    //{
+    //    yield return new WaitForSeconds(delay);
+    //    Destroy(bullet);
 
-    }
+    //}
 }
 ;

@@ -7,7 +7,7 @@ public class BulletBehaviour : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         print("hit " + other.name + "!");
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
 }
